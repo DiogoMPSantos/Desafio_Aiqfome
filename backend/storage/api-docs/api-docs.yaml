@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Laravel API - Clientes e Produtos Favoritos
+  version: 1.0.0
+  description: API para gerenciar clientes e produtos favoritos com autenticação via Sanctum.
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    SanctumAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+      required:
+        - name
+        - email
+
+    Favorite:
+      type: object
+      properties:
+        product_id:
+          type: string
+        title:
+          type: string
+        image:
+          type: string
+        price:
+          type: number
+          format: float
+        review:
+          type: object
+      required:
+        - product_id
+
+security:
+  - SanctumAuth: []
+
+paths:
+  /clients:
+    get:
+      summary: List all clients
+      tags:
+        - Clients
+      responses:
+        '200':
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Create a new client
+      tags:
+        - Clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Client created successfully
+
+  /clients/{clientId}:
+    get:
+      summary: Get client details
+      tags:
+        - Clients
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Client details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      summary: Update client
+      tags:
+        - Clients
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Client updated successfully
+    delete:
+      summary: Delete client
+      tags:
+        - Clients
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Client deleted successfully
+
+  /clients/{clientId}/favorites:
+    get:
+      summary: List favorites of a client
+      tags:
+        - Favorites
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of favorites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorite'
+    post:
+      summary: Add a product to client's favorites
+      tags:
+        - Favorites
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '201':
+          description: Product added to favorites
+
+  /clients/{clientId}/favorites/{productId}:
+    delete:
+      summary: Remove a product from client's favorites
+      tags:
+        - Favorites
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Product removed from favorites
