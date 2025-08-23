@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('clients')->group(function () {
+    Route::get('/', [ClientController::class, 'index']);
+    Route::post('/', [ClientController::class, 'store']);
+    Route::get('{client}', [ClientController::class, 'show']);
+    Route::put('{client}', [ClientController::class, 'update']);
+    Route::delete('{client}', [ClientController::class, 'destroy']);
+
+    Route::get('{client}/favorites', [FavoriteController::class, 'index']);
+    Route::post('{client}/favorites', [FavoriteController::class, 'store']);
+    Route::delete('{client}/favorites/{productId}', [FavoriteController::class, 'destroy']);
+});
+
