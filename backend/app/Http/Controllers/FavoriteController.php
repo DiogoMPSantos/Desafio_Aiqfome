@@ -62,6 +62,13 @@ class FavoriteController extends Controller
             return response()->json(['message' => 'Client not found'], 404);
         }
 
+        $fav = $model->favorites()->where('product_id', $productId)->first();
+
+        if (!$fav) {
+            return response()->json(
+                ['message' => 'Product not found in favorites'], 404);
+        }
+
         $this->favorites->remove($model, $productId);
 
         return response()->json([], 204);
