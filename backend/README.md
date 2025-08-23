@@ -79,3 +79,13 @@ Endpoints protegidos exigem o **token Bearer** gerado pelo login.
 
 ---
 
+
+### 6. Documentação Swagger
+
+A documentação interativa da API pode ser acessada no navegador:
+
+```
+http://localhost:8000/api/documentation
+```
+
+Essa rota exibirá o Swagger UI com todos os endpoints de clientes e favoritos, permitindo explorar e testar a API diretamente.
