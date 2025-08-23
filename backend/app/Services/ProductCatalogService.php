@@ -8,10 +8,10 @@ use Illuminate\Validation\ValidationException;
 
 class ProductCatalogService
 {
-    public function __construct(
-        private readonly string $baseUrl,
-        private readonly int $timeout
-    ) {
+    private string $baseUrl;
+    private int $timeout;
+    
+    public function __construct() {
         $this->baseUrl = config('services.products.base', env('PRODUCTS_API_BASE', ''));
         $this->timeout = (int) env('PRODUCTS_API_TIMEOUT', 5);
     }
