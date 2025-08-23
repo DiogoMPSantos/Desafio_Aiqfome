@@ -2,7 +2,7 @@
 
 Esta API RESTful permite gerenciar **clientes** e seus **produtos favoritos**, integrando com uma API externa de produtos. O projeto utiliza **Laravel 11**, **PHP 8.1**, **MySQL** e **Sanctum** para autenticação.
 
-> A documentação da API via **Swagger/OpenAPI** estará disponível em `docs/swagger.yaml`.
+> A documentação da API via **Swagger/OpenAPI** estará disponível em `storage/docs/api-docs.yaml`.
 
 ---
 
