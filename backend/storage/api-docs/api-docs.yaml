@@ -50,6 +50,122 @@ security:
   - SanctumAuth: []
 
 paths:
+  /register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Diogo Santos
+                email:
+                  type: string
+                  format: email
+                  example: diogo.santos@example.com
+                password:
+                  type: string
+                  format: password
+                  example: secret123
+      responses:
+        '201':
+          description: User created successfully
+        '422':
+          description: Validation error
+  /login:
+    post:
+      summary: Login user and return token
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: diogo.santos@example.com
+                password:
+                  type: string
+                  format: password
+                  example: secret123
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+  /logout:
+      post:
+        summary: Logout authenticated user
+        tags:
+          - Auth
+        security:
+          - SanctumAuth: []
+        responses:
+          '200':
+            description: User logged out successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Successfully logged out
+          '401':
+            description: Unauthorized
+  /user:
+    get:
+      summary: Get authenticated user
+      tags:
+        - Users
+      security:
+        - SanctumAuth: []
+      responses:
+        '200':
+          description: Authenticated user information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Diogo Santos
+                  email:
+                    type: string
+                    format: email
+                    example: diogo.santos@example.com
+        '401':
+          description: Unauthorized
   /clients:
     get:
       summary: List all clients
