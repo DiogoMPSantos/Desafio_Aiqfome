@@ -68,6 +68,12 @@ class ProductCatalogService
         }
 
         $data = $resp->json();
+        
+        if (empty($data['id'])) {
+            throw ValidationException::withMessages([
+                'product_id' => ['Product not found in external catalog.']
+            ]);
+        }
 
         return [
             'product_id' => (string)($data['id'] ?? $productId),
