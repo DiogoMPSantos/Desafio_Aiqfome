@@ -19,25 +19,27 @@ class FavoriteController extends Controller
     public function index(int $client): JsonResponse
     {
         $model = Client::find($client);
-        abort_if(!$model, 404);
+        if (!$model) {
+            return response()->json(['message' => 'Client not found'], 404);
+        }
         return response()->json($this->favorites->listByClient($model));
     }
 
     public function store(FavoriteAddRequest $request, int $client): JsonResponse
     {
         $model = Client::find($client);
-        abort_if(!$model, 404);
+        if (!$model) {
+            return response()->json(['message' => 'Client not found'], 404);
+        }
 
         $productId = (string) $request->validated()['product_id'];
 
-        // block duplicates early
         if ($this->favorites->findByClientAndProduct($model, $productId)) {
             throw ValidationException::withMessages([
                 'product_id' => ['This product is already in client favorites.']
             ]);
         }
 
-        // fetch & normalize external product
         $external = $this->catalog->getProductOrFail($productId);
 
         $payload = [
@@ -56,7 +58,9 @@ class FavoriteController extends Controller
     public function destroy(int $client, string $productId): JsonResponse
     {
         $model = Client::find($client);
-        abort_if(!$model, 404);
+        if (!$model) {
+            return response()->json(['message' => 'Client not found'], 404);
+        }
 
         $this->favorites->remove($model, $productId);
 
