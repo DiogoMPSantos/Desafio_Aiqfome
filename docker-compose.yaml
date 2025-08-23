@@ -13,20 +13,6 @@ services:
       - mysql
     ports:
       - "9000:9000"
-
-  frontend:
-    build:
-      context: .
-      dockerfile: docker/frontend/Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    working_dir: /app
-    command: npm run dev -- --host
-    depends_on:
-      - app
   mysql:
     image: mysql:8.0
     container_name: mysql_db
