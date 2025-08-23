@@ -12,6 +12,8 @@ sleep 10
 
 echo "MySQL is up - running migrations and seeders..."
 
+php artisan key:generate
+
 php artisan migrate:fresh --seed --force
 
 if [ ! -L /var/www/public/storage ]; then
